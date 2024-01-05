@@ -1,0 +1,50 @@
+﻿@model List<string>
+
+@foreach (var info in @Model)
+{
+    @if (info.Contains("text:"))
+    {
+        <p class="mb-3">@info.Replace("text:", "")</p>
+    }
+    @if (info.Contains("result:"))
+    {
+        <p class="fw-bold">Результат: @info.Replace("result:", "")</p>
+    }
+    @if (info.Contains("mathModel:"))
+    {
+        var mathModelString = info.Replace("mathModel:", "").Split(";");
+        var firstStr =
+            mathModelString.First(s => s.Contains("c:"))
+                .Replace("c:", "")
+                .Split(",");
+        var secondStr =
+            mathModelString.First(s => s.Contains("v:"))
+                .Replace("v:", "")
+                .Split("|");
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                @foreach (var criteria in firstStr)
+                {
+                    <th scope="col">@criteria</th>
+                }
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var vector in secondStr)
+            {
+                var vectorSplit = vector.Split("=");
+                <tr>
+                    <th scope="col">@vectorSplit[0]</th>
+                    @foreach (var num in vectorSplit[1].Split(","))
+                    {
+                        double dnum = Double.Parse(num.Replace(".", ","));
+                        <td>@dnum</td>
+                    }
+                </tr>
+            }
+            </tbody>
+        </table>
+    }
+}

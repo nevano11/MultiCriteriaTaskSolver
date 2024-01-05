@@ -1,0 +1,10 @@
+#ifndef DMLTESTER_SEQUENTIALNARROWINGALTERNATIVESMETHOD_H
+#define DMLTESTER_SEQUENTIALNARROWINGALTERNATIVESMETHOD_H
+
+#include "../MultiCriteriaMethod.h"
+
+class SequentialNarrowingAlternativesMethod : public MultiCriteriaMethod {
+};
+
+
+#endif //DMLTESTER_SEQUENTIALNARROWINGALTERNATIVESMETHOD_H

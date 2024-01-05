@@ -1,0 +1,8 @@
+version: "3.0"
+
+services: 
+  solver:
+    image: solver:latest
+    build: .
+    ports:
+      - 7:80

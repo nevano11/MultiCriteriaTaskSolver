@@ -1,0 +1,101 @@
+﻿@model Web.UI.Entity.SolveResults.MultiStepResult
+<p class="text-sm-start fs-3 mt-4 mb-3">Решение задачи принятия решений</p>
+<div class="successive-concessions card card-body border border-dark">
+    <h4 class="fw-bold">@Model.MethodInformation.Name</h4>
+    @foreach (var addMethod in Model.MethodInformation.AdditionalMethods)
+    {
+        <p>@addMethod.Name - @addMethod.Value</p>
+    }
+    <p class="fw-bold">Решение: </p>
+    @await Html.PartialAsync("_ProtocolResult", Model.Solve())
+    <div class="steps"></div>
+    @if (!Model.IsSolutionComplete)
+    {
+        <div class="input-group mb-3">
+            <input
+                type="number"
+                class="cede-value form-control"
+                placeholder="Уступка"
+                aria-label="Уступка">
+            <button class="btn btn-primary write-cede-value ms-1 me-1" type="button">Ввести</button>
+            <button class="btn btn-secondary stop-solving" type="button">Завершить решение</button>
+        </div>
+    }
+</div>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript">
+$(function () {
+    function sendCedeValue (e) {
+        let cede = $(".successive-concessions .input-group .cede-value").val();
+        if (cede.length === 0)
+            return;
+        
+        let sendedData = {
+           "guid": '@Model.Guid',
+           "parameters": 
+               {"cedeValue": cede }
+        };
+        $.ajax({
+            url: "/make-iteration",
+            method: "POST",
+            data: JSON.stringify(sendedData),
+            contentType: "application/json; charset=utf-8",
+            beforeSend: function () {
+                $(".successive-concessions .input-group").hide()
+                $(".steps").append(
+                "<div class=\"d-flex justify-content-center div-to-delete-qweqweq mb-5 mt-3\">" +
+                "  <div class=\"spinner-border\" role=\"status\">" +
+                "    <span class=\"visually-hidden\">Loading...</span>" +
+                "  </div>" +
+                "</div>")
+            },
+            complete: function () {
+                $(".steps .div-to-delete-qweqweq").remove()
+                $(".successive-concessions .input-group").show()
+            },
+            success: function(response) {
+                $(".steps").append(response)
+                $(".successive-concessions .input-group .cede-value").val("");
+                $.ajax({
+                    url: "/is-solving-stopped?guid=" + '@Model.Guid',
+                    method: "GET",
+                    contentType: "application/json; charset=utf-8",
+                    success: function(response) {
+                        if (response) {
+                            $(".successive-concessions .input-group").remove();
+                        }
+                    },
+                    error: function() {
+                        console.log("Error is-solving-stopped")
+                    }
+                });
+            },
+            error: function() {
+                console.log("Error on make-iteration")
+            }
+        });
+    }
+    
+    function stopSolving (e) {            
+        let sendedData = {
+           "guid": '@Model.Guid'
+        };
+        $.ajax({
+            url: "/stop-solving",
+            method: "POST",
+            data: JSON.stringify(sendedData),
+            contentType: "application/json; charset=utf-8",
+            success: function(response) {
+                $(".steps").append("Решение завершено досрочно")
+                $(".successive-concessions .input-group").remove();
+            },
+            error: function() {
+                console.log("Error on stop solving")
+            }
+        });
+    }
+    
+    $(".write-cede-value").on("click", sendCedeValue)
+    $(".stop-solving").on("click", stopSolving)
+})
+</script>

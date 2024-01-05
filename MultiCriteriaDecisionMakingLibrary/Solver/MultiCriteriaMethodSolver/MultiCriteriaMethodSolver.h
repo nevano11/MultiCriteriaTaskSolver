@@ -1,0 +1,11 @@
+#ifndef DMLTESTER_MULTICRITERIAMETHODSOLVER_H
+#define DMLTESTER_MULTICRITERIAMETHODSOLVER_H
+
+#include "../Solver.h"
+
+class MultiCriteriaMethodSolver : public Solver {
+
+};
+
+
+#endif //DMLTESTER_MULTICRITERIAMETHODSOLVER_H

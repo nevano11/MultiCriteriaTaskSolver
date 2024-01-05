@@ -1,0 +1,28 @@
+cmake_minimum_required(VERSION 3.23)
+project(MultiCriteriaDecisionMakingLibrary)
+
+set(CMAKE_OBJECT_PATH_MAX 260)
+set(CMAKE_CXX_STANDARD 17)
+
+add_library(MultiCriteriaDecisionMakingLibrary SHARED
+        MathModel/Components/EstimateVector.cpp
+        MathModel/Components/Criteria.cpp
+        CriteriaRelation/CriteriaRelationConverter.cpp
+        MathModel/MathModel.cpp
+        CriteriaRelation/Relations/TwoCriteriaRelation.cpp
+        DecisionMakingMethod/Methods/LexicographicOptimization.cpp
+        Solver/MultiCriteriaMethodSolver/OneStepMultiCriteriaMethodSolver.cpp
+        CriteriaRelation/Relations/AllCriteriaRelation.cpp
+        DecisionMakingMethod/SolveStatus.cpp
+        DecisionMakingMethod/Methods/CriteriaAggregationMethod.cpp
+        CriteriaRelation/Relations/WeightCriteriaRelation.cpp
+        CriteriaRelation/Relations/WeightCriteriaRelations/SimpleRankingMethod.cpp
+        CriteriaRelation/Relations/WeightCriteriaRelations/ProportionalMethod.cpp
+        CriteriaRelation/Relations/SimpleCriteriaRelation.cpp
+        MathModel/Converters/Normalizers/MinMaxNormalizer.cpp
+        DecisionMakingMethod/Methods/AuxiliaryMethods/AggregationOperators/AddictiveAggregationOperator.cpp
+        DecisionMakingMethod/Methods/AuxiliaryMethods/AggregationOperators/MultiplicativeAggregationOperator.cpp
+        DecisionMakingMethod/Methods/AuxiliaryMethods/AggregationOperators/IdealDistanceAggregationOperator.cpp
+        DecisionMakingMethod/DecisionMakerInfo/DecisionMakerInfo/CedeValueInfo.cpp
+        DecisionMakingMethod/IntermediateMethodData/IntermediateMethodData/SuccessiveConcessionsIntermediateData.cpp
+        CriteriaRelation/Relations/SimpleCriteriaRelationUtils/SimpleCriteriaRelationUtil.cpp CriteriaRelation/Relations/SimpleCriteriaRelationUtils/Node.cpp Solver/MultiCriteriaMethodSolver/MultiStepMultiCriteriaMethodSolver.cpp)
