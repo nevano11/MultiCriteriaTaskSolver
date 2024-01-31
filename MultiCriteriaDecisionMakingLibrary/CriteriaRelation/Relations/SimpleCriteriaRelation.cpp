@@ -73,7 +73,7 @@ SimpleCriteriaRelation::SimpleCriteriaRelation() {
 
 // TODO
 CriteriaRelation *SimpleCriteriaRelation::copy() {
-    return nullptr;
+    return this;
 }
 
 int SimpleCriteriaRelation::getCriteriaCount() {

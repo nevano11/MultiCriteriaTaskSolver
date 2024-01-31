@@ -1,0 +1,13 @@
+#ifndef MULTICRITERIADECISIONMAKINGLIBRARY_ALTERNATIVEUNIFIER_H
+#define MULTICRITERIADECISIONMAKINGLIBRARY_ALTERNATIVEUNIFIER_H
+
+
+#include "../Unifier.h"
+
+class AlternativeUnifier : public Unifier{
+public:
+    MathModel* getUnifiedMathModel(MathModel* original);
+};
+
+
+#endif //MULTICRITERIADECISIONMAKINGLIBRARY_ALTERNATIVEUNIFIER_H

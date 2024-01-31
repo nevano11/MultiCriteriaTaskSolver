@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
-#include "CriteriaRelation/Relations/TwoCriteriaRelation.h"
-#include "CriteriaRelation/Relations/SimpleCriteriaRelation.h"
-#include "CriteriaRelation/CriteriaRelationConverter.h"
-#include "CriteriaRelation/Relations/WeightCriteriaRelations/SimpleRankingMethod.h"
+#include "../CriteriaRelation/Relations/TwoCriteriaRelation.h"
+#include "../CriteriaRelation/Relations/SimpleCriteriaRelation.h"
+#include "../CriteriaRelation/CriteriaRelationConverter.h"
+#include "../CriteriaRelation/Relations/WeightCriteriaRelations/SimpleRankingMethod.h"
 
 using namespace std;
 

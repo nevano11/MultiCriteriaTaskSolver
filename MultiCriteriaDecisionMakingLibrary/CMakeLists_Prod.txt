@@ -25,4 +25,11 @@ add_library(MultiCriteriaDecisionMakingLibrary SHARED
         DecisionMakingMethod/Methods/AuxiliaryMethods/AggregationOperators/IdealDistanceAggregationOperator.cpp
         DecisionMakingMethod/DecisionMakerInfo/DecisionMakerInfo/CedeValueInfo.cpp
         DecisionMakingMethod/IntermediateMethodData/IntermediateMethodData/SuccessiveConcessionsIntermediateData.cpp
-        CriteriaRelation/Relations/SimpleCriteriaRelationUtils/SimpleCriteriaRelationUtil.cpp CriteriaRelation/Relations/SimpleCriteriaRelationUtils/Node.cpp Solver/MultiCriteriaMethodSolver/MultiStepMultiCriteriaMethodSolver.cpp)
+        CriteriaRelation/Relations/SimpleCriteriaRelationUtils/SimpleCriteriaRelationUtil.cpp CriteriaRelation/Relations/SimpleCriteriaRelationUtils/Node.cpp Solver/MultiCriteriaMethodSolver/MultiStepMultiCriteriaMethodSolver.cpp
+        DecisionMakingMethod/Methods/ElectreMethod.cpp
+        DecisionMakingMethod/Methods/ElectreMethod.h
+        MathModel/Converters/Unifier.h
+        MathModel/Converters/Unifier.h
+        MathModel/Converters/Unifiers/AlternativeUnifier.cpp
+        MathModel/Converters/Unifiers/AlternativeUnifier.h
+)
