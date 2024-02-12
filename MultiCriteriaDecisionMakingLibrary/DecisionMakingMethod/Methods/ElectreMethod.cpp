@@ -1,10 +1,14 @@
 #include "ElectreMethod.h"
 #include "../../MathModel/Converters/Unifiers/AlternativeUnifier.h"
+#include "../DecisionMakerInfo/DecisionMakerInfo/AlfaBetaInfo.h"
 
 ElectreMethod::ElectreMethod() {
     this->solveStatus = new SolveStatus(None);
     this->mathModel = nullptr;
     this->relation = nullptr;
+
+    this->alfa = 0;
+    this->beta = 1;
 }
 
 ElectreMethod::ElectreMethod(MathModel *mathModel, CriteriaRelation *relation) {
@@ -20,6 +24,9 @@ ElectreMethod::ElectreMethod(MathModel *mathModel, CriteriaRelation *relation) {
 
     int estimateVectorCount = this->mathModel->getEstimateVectorCount();
     int criteriaCount = this->mathModel->getCriteriaCount();
+
+    this->alfa = 0;
+    this->beta = 1;
 
     // for agreement matrix need WeightRelation
     auto weightCriteriaRelation = CriteriaRelationConverter::convertToWeightCriteriaRelation(this->relation);
@@ -52,13 +59,6 @@ ElectreMethod::ElectreMethod(MathModel *mathModel, CriteriaRelation *relation) {
             }
             this->agreementMatrix[mainAlternativeIndex][alternativeIndex] = agreement;
         }
-    }
-    // printing
-    for (int mainAlternativeIndex = 0; mainAlternativeIndex < estimateVectorCount; ++mainAlternativeIndex) {
-        for (int sAlternativeIndex = 0; sAlternativeIndex < estimateVectorCount; ++sAlternativeIndex) {
-            std::cout << this->agreementMatrix[mainAlternativeIndex][sAlternativeIndex] << " ";
-        }
-        std::cout << std::endl;
     }
 
     // build matrix of disagreement
@@ -103,13 +103,6 @@ ElectreMethod::ElectreMethod(MathModel *mathModel, CriteriaRelation *relation) {
             this->disagreementMatrix[mainAlternativeIndex][alternativeIndex] = max;
         }
     }
-    // printing
-    for (int mainAlternativeIndex = 0; mainAlternativeIndex < estimateVectorCount; ++mainAlternativeIndex) {
-        for (int sAlternativeIndex = 0; sAlternativeIndex < estimateVectorCount; ++sAlternativeIndex) {
-            std::cout << this->disagreementMatrix[mainAlternativeIndex][sAlternativeIndex] << " ";
-        }
-        std::cout << std::endl;
-    }
 }
 
 ElectreMethod::~ElectreMethod() {
@@ -142,8 +135,52 @@ ElectreMethod::~ElectreMethod() {
     }
 }
 
+void ElectreMethod::calculateValiditySolveStatus() {
+    if (mathModel == nullptr) {
+        solveStatus = new SolveStatus(InvalidModel, "math model was null");
+        return;
+    }
+
+    if (relation == nullptr) {
+        solveStatus = new SolveStatus(InvalidData, "relation was null");
+        return;
+    }
+
+    if ((relation = CriteriaRelationConverter::convertToWeightCriteriaRelation(relation)) == nullptr) {
+        solveStatus = new SolveStatus(InvalidData, "relation cannot be reduces to WeightCriteriaRelation");
+        return;
+    }
+
+    if (!mathModel->isValid()) {
+        solveStatus = new SolveStatus(InvalidModel, "invalid math model");
+        return;
+    }
+
+    if (!relation->isValid()) {
+        solveStatus = new SolveStatus(InvalidData, "criteria relationships are set incorrectly");
+    }
+}
+
 SolveStatus *ElectreMethod::makeIteration(DecisionMakerInfo *decisionMakingInfo) {
-    return nullptr;
+    auto status = solve();
+    if (status->getStatus() != DecisionStatus::None &&
+        status->getStatus() != DecisionStatus::Process)
+        return status;
+
+    delete status;
+    status = new SolveStatus(DecisionStatus::Process);
+
+    auto alfaBetaInfo = dynamic_cast<AlfaBetaInfo*>(decisionMakingInfo);
+    if (alfaBetaInfo == nullptr)
+        return new SolveStatus(DecisionStatus::InvalidData, "wrong decision maker info type. Expected AlfaBetaInfo");
+
+    if (!alfaBetaInfo->isValid())
+        return new SolveStatus(DecisionStatus::InvalidData, "wrong decision maker info is not valid. 0,5 > alfa > 0; 1 ? beta > 0,5");
+
+    this->alfa = alfaBetaInfo->getAlfa();
+    this->beta = alfaBetaInfo->getBeta();
+
+    return solve();
 }
 
 IntermediateMethodData *ElectreMethod::getIntermediateMethodData() {
@@ -151,6 +188,15 @@ IntermediateMethodData *ElectreMethod::getIntermediateMethodData() {
 }
 
 SolveStatus *ElectreMethod::solve() {
+    if (solveStatus->getStatus() == DecisionStatus::Optimal ||
+        solveStatus->getStatus() == DecisionStatus::Process ||
+        solveStatus->getStatus() == DecisionStatus::Feasible)
+        return solveStatus;
+
+    delete solveStatus;
+    solveStatus = new SolveStatus(None);
+
+    calculateValiditySolveStatus();
     return solveStatus;
 }
 

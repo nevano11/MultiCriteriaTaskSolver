@@ -108,10 +108,11 @@ SolveStatus *SuccessiveConcessionsMethod::makeIteration(DecisionMakerInfo* decis
         status->getStatus() != DecisionStatus::Process)
         return status;
 
+    delete status;
     status = new SolveStatus(DecisionStatus::Process);
 
     if (dynamic_cast<CedeValueInfo*>(decisionMakingInfo) == nullptr)
-        return status;
+        return new SolveStatus(DecisionStatus::InvalidData, "wrong decision maker info type. Expected CedeValueInfo");
 
     double delta = ((CedeValueInfo*) decisionMakingInfo)->getCedeValue();
     double max = 0, min = 0;

@@ -32,4 +32,6 @@ add_library(MultiCriteriaDecisionMakingLibrary SHARED
         MathModel/Converters/Unifier.h
         MathModel/Converters/Unifiers/AlternativeUnifier.cpp
         MathModel/Converters/Unifiers/AlternativeUnifier.h
+        DecisionMakingMethod/DecisionMakerInfo/DecisionMakerInfo/AlfaBetaInfo.cpp
+                DecisionMakingMethod/DecisionMakerInfo/DecisionMakerInfo/AlfaBetaInfo.h
 )

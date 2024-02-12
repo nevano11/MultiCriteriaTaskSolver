@@ -19,6 +19,11 @@ private:
 
     double** agreementMatrix;
     double** disagreementMatrix;
+
+    int alfa;
+    int beta;
+
+    void calculateValiditySolveStatus();
 public:
     ElectreMethod();
     ElectreMethod(MathModel* mathModel, CriteriaRelation* relation);
