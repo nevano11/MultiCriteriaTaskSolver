@@ -57,6 +57,8 @@ Criteria::Criteria(int id, std::string name, CriteriaType criteriaType = Criteri
     this->id = id;
     this->name = std::move(name);
     this->type = criteriaType;
+
+    std::cout << "Allocate mem to criteria";
 }
 
 Criteria::Criteria(const Criteria &other) : id(other.id), name(other.name), type(other.type)
@@ -65,6 +67,7 @@ Criteria::Criteria(const Criteria &other) : id(other.id), name(other.name), type
 
 Criteria::~Criteria()
 {
+    std::cout << "Destruct memory to criteria";
 }
 
 int Criteria::getId()

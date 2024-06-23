@@ -20,7 +20,8 @@ add_executable(MultiCriteriaDecisionMakingLibrary tests/new_features_test.cpp te
         MathModel/Converters/Unifiers/AlternativeUnifier.cpp
         MathModel/Converters/Unifiers/AlternativeUnifier.h
         DecisionMakingMethod/DecisionMakerInfo/DecisionMakerInfo/AlfaBetaInfo.cpp
-        DecisionMakingMethod/DecisionMakerInfo/DecisionMakerInfo/AlfaBetaInfo.h)
+        DecisionMakingMethod/DecisionMakerInfo/DecisionMakerInfo/AlfaBetaInfo.h
+        tests/cpp_tets.cpp)
 
 target_link_libraries(MultiCriteriaDecisionMakingLibrary gtest gtest_main)
 
